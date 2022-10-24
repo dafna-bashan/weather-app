@@ -1,4 +1,3 @@
-// import {boards} from '../data/board' 
 
 export const storageService = {
     query,
@@ -7,7 +6,7 @@ export const storageService = {
     put,
     remove,
 }
-query()
+
 function query(entityType, filterBy) {
     // we need to add the filterBy details. 
     var entities = JSON.parse(localStorage.getItem(entityType)) || []

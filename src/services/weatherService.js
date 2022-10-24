@@ -61,14 +61,14 @@ async function getLocs(loc) {
 async function getForecast(locKey) {
     try {
         let res = JSON.parse(localStorage.getItem(locKey))
-        console.log(res);
-        // if (!res || !res.length || typeof res !== Object) {
-        //     res = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=nkOyFybtTGyunYA168WWKTuGxlVYRRAP`)
-        //     localStorage.setItem(locKey, JSON.stringify(res.data))
-        //     console.log('from axios');
-        //     // console.log(res.data);
-        //     return res.data
-        // }
+        // console.log(res);
+        if (!res) {
+            res = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=nkOyFybtTGyunYA168WWKTuGxlVYRRAP`)
+            localStorage.setItem(locKey, JSON.stringify(res.data))
+            console.log('from axios');
+            // console.log(res.data); 
+            return res.data
+        }
         console.log('from storage');
         return res
     } catch (err) {
