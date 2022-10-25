@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const ForecastPreview = ({ forecast }) => {
-    console.log(forecast);
+    // console.log(forecast);
     return (
         <div>
             {forecast.Date.substr(0,10)}
