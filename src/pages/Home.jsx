@@ -9,9 +9,9 @@ export const Home = () => {
   const [searchTerm, setLocation] = useState({ txt: '', res: [] })
   const [forecast, setForecast] = useState({ locKey: '', res: {} })
 
-  const handleChange = async ({ target }) => {
+  const handleChange = ({ target }) => {
     const { name, value } = target
-    await setLocation({ [name]: value })
+    setLocation({ [name]: value })
     console.log(searchTerm);
   }
 
@@ -31,15 +31,12 @@ export const Home = () => {
     const res = await forecastService.query(loc.key)
     setForecast({locKey:loc.key, res})
   }
-  return (
 
-    <div>
-      <h1>Home!</h1>
-      {/* <form onSubmit={onSearch}> */}
+  return (
+    <div className='home'>
       <SearchBar handleChange={handleChange}/>
       {searchTerm.res && searchTerm.res.length && <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} />}
       {forecast.res.DailyForecasts && <ForecastList forecasts={forecast.res.DailyForecasts} />}
-      {/* </form> */}
     </div>
   )
 }
