@@ -11,9 +11,9 @@ export const storageService = {
 
 function query(entityType) {
     var entities = JSON.parse(localStorage.getItem(entityType))
-    // if (!entities || !entities.length) {
-    //     entities = boards
-    // }
+    if (entityType === 'favorites' && !entities) {
+        entities = []
+    }
     // console.log ('entities =',entities)
   return Promise.resolve(entities)
     

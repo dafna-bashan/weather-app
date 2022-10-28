@@ -4,10 +4,15 @@ import { ForecastList } from '../cmps/ForecastList'
 import { locationService } from '../services/locationService'
 import { forecastService } from '../services/forecastService'
 import { SearchBar } from '../cmps/SearchBar'
+import { useDispatch, useSelector } from 'react-redux'
+import { addFavLoc, removeFavLoc } from '../store/favLocsActions'
 
 export const Home = () => {
   const [searchTerm, setSearchTerm] = useState({ txt: '', res: [] })
-  const [forecast, setForecast] = useState({ locKey: '', city: '', country: '', res: {} })
+  const [forecast, setForecast] = useState({ locKey: '', city: '', country: '', res: {}, isFavorite: false })
+
+  const favLocs = useSelector(state => state.favLocs)
+  const dispatch = useDispatch()
 
   const handleChange = ({ target }) => {
     const { name, value } = target
@@ -23,8 +28,7 @@ export const Home = () => {
   const onSearch = async () => {
     const res = await locationService.query(searchTerm.txt)
     console.log(res);
-    await setSearchTerm({ ...searchTerm, res })
-    console.log(searchTerm);
+    setSearchTerm({ ...searchTerm, res })
   }
 
   const onSelectLoc = async (loc) => {
@@ -33,13 +37,25 @@ export const Home = () => {
     setSearchTerm({ txt: '', res: [] })
   }
 
+  const onToggleFav = () => {
+    if (forecast.isFavorite) {
+      dispatch(removeFavLoc(forecast._id))
+      setForecast({ ...forecast, isFavorite: false })
+      ///TODO -update in storage service
+    } else {
+      dispatch(addFavLoc({ key: forecast.locKey, forecast: forecast.res, isFavorite: true }))
+      setForecast({ ...forecast, isFavorite: true })
+       ///TODO -update in storage service
+    }
+  }
+
   return (
     <div className="home">
       <div className="search-container">
         <SearchBar searchTerm={searchTerm.txt} handleChange={handleChange} />
         {searchTerm.res && searchTerm.res.length && <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} />}
       </div>
-      {forecast.res.DailyForecasts && <ForecastList city={forecast.city} country={forecast.country} forecasts={forecast.res.DailyForecasts} />}
+      {forecast.res.DailyForecasts && <ForecastList city={forecast.city} country={forecast.country} forecast={forecast} onToggleFav={onToggleFav} />}
     </div>
   )
 }
