@@ -6,12 +6,12 @@ import { forecastService } from '../services/forecastService'
 import { SearchBar } from '../cmps/SearchBar'
 
 export const Home = () => {
-  const [searchTerm, setLocation] = useState({ txt: '', res: [] })
-  const [forecast, setForecast] = useState({ locKey: '', res: {} })
+  const [searchTerm, setSearchTerm] = useState({ txt: '', res: [] })
+  const [forecast, setForecast] = useState({ locKey: '', city: '', country: '', res: {} })
 
   const handleChange = ({ target }) => {
     const { name, value } = target
-    setLocation({ [name]: value })
+    setSearchTerm({ [name]: value })
     console.log(searchTerm);
   }
 
@@ -23,22 +23,23 @@ export const Home = () => {
   const onSearch = async () => {
     const res = await locationService.query(searchTerm.txt)
     console.log(res);
-    await setLocation({ ...searchTerm, res })
+    await setSearchTerm({ ...searchTerm, res })
     console.log(searchTerm);
   }
 
   const onSelectLoc = async (loc) => {
-    const res = await forecastService.query(loc.key)
-    setForecast({locKey:loc.key, res})
+    const res = await forecastService.query(loc.key, loc.city, loc.country)
+    setForecast({ locKey: loc.key, city: loc.city, country: loc.country, res })
+    setSearchTerm({ txt: '', res: [] })
   }
 
   return (
     <div className="home">
       <div className="search-container">
-      <SearchBar handleChange={handleChange}/>
-      {searchTerm.res && searchTerm.res.length && <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} />}
+        <SearchBar searchTerm={searchTerm.txt} handleChange={handleChange} />
+        {searchTerm.res && searchTerm.res.length && <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} />}
       </div>
-      {forecast.res.DailyForecasts && <ForecastList forecasts={forecast.res.DailyForecasts} />}
+      {forecast.res.DailyForecasts && <ForecastList city={forecast.city} country={forecast.country} forecasts={forecast.res.DailyForecasts} />}
     </div>
   )
 }
