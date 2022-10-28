@@ -3,7 +3,7 @@ import React from 'react'
 export const ForecastPreview = ({ forecast }) => {
     // console.log(forecast);
     return (
-        <div>
+        <div className="forecast-preview">
             {forecast.Date.substr(0,10)}
             <div className="day">Day: {forecast.Day.IconPhrase}</div>
             <div className="night">Night: {forecast.Night.IconPhrase}</div>

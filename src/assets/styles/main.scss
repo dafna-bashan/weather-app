@@ -12,8 +12,14 @@
 @import 'basics/buttons';
 @import 'basics/animation';
 
-// Components
-@import './cmps/navBar';
-
 // Pages
 @import './pages/home';
+
+// Components
+@import './cmps/navBar';
+@import './cmps/searchBar';
+@import './cmps/locList';
+@import './cmps/locPreview';
+@import './cmps/forecastList';
+@import './cmps/forecastPreview';
+

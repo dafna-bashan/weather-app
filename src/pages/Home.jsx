@@ -33,9 +33,11 @@ export const Home = () => {
   }
 
   return (
-    <div className='home'>
+    <div className="home">
+      <div className="search-container">
       <SearchBar handleChange={handleChange}/>
       {searchTerm.res && searchTerm.res.length && <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} />}
+      </div>
       {forecast.res.DailyForecasts && <ForecastList forecasts={forecast.res.DailyForecasts} />}
     </div>
   )
