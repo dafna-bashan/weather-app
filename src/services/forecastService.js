@@ -16,7 +16,7 @@ async function query(locKey, city, country) {
     if (!forecast || !forecast[locKey]) {
         try {
             const res = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=nkOyFybtTGyunYA168WWKTuGxlVYRRAP`)
-            storageService.save(FORECAST_STORAGE_KEY, { ...forecast, [locKey]: {...res.data, city, country} })
+            storageService.save(FORECAST_STORAGE_KEY, { ...forecast, [locKey]: {...res.data, city, country, isFavorite: false} })
             console.log('from axios');
             return res.data
         } catch (err) {

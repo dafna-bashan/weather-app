@@ -1,13 +1,15 @@
 import React from 'react'
 
 export const ForecastPreview = ({ forecast }) => {
-    // console.log(forecast);
+
+    const { Day, Date, Night, Temperature } = forecast
     return (
         <div className="forecast-preview">
-            {forecast.Date.substr(0,10)}
-            <div className="day">Day: {forecast.Day.IconPhrase}</div>
-            <div className="night">Night: {forecast.Night.IconPhrase}</div>
-            <div className="temp">Temperature: {forecast.Temperature.Minimum.Value} &#176; {forecast.Temperature.Minimum.Unit}</div>
+            <div>{Date.substring(8, 10)} - {Date.substring(5, 7)} - {Date.substring(0, 4)}</div>
+            <div className="day">Day: {Day.IconPhrase}</div>
+            <div className="night">Night: {Night.IconPhrase}</div>
+            <div className="temp">Temp: {Temperature.Minimum.Value}&#176;{Temperature.Minimum.Unit} - {Temperature.Maximum.Value}&#176;{Temperature.Maximum.Unit}
+            </div>
         </div>
     )
 }
