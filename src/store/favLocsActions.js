@@ -39,6 +39,7 @@ export function removeFavLoc(locId) {
     return async (dispatch) => {
         try {
             await favoritesService.remove(locId);
+            console.log("🚀 ~ file: favLocsActions.js ~ line 43 ~ return ~ locId", locId)
             dispatch({ type: 'REMOVE_FAV_LOC', locId });
         } catch (err) {
             console.log('favLocsActions: err in removefavLoc', err);

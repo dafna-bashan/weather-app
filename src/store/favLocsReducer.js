@@ -5,6 +5,7 @@ const initialState = {
 
 
 export function favLocsReducer(state = initialState, action) {
+console.log("🚀 ~ file: favLocsReducer.js ~ line 8 ~ favLocsReducer ~ action", action)
 
     switch (action.type) {
         case 'SET_FAV_LOCS':
@@ -17,7 +18,7 @@ export function favLocsReducer(state = initialState, action) {
             return { ...state, favLocs: [...state.favLocs, action.favLoc] }
 
         case 'REMOVE_FAV_LOC':
-            return { ...state, favLocs: state.favLocs.filter(favLoc => favLoc._id !== action.favLocId) }
+            return { ...state, favLocs: state.favLocs.filter(favLoc => favLoc._id !== action.locId) }
 
         // case 'UPDATE_TODO':
         //     return { ...state, todos: state.todos.map(todo => todo._id === action.todo._id ? action.todo : todo) }

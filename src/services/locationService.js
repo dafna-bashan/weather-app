@@ -11,7 +11,7 @@ export const locationService = {
 
 
 async function query(locName) {
-    if (!locName) return
+    // if (!locName) return
     var locations = await storageService.query(LOCATION_STORAGE_KEY, locName)
     if (!locations || !locations[locName]) {
         try {

@@ -26,6 +26,7 @@ export const Home = () => {
   }, [searchTerm.txt])
 
   const onSearch = async () => {
+    if (!searchTerm.txt) return
     const res = await locationService.query(searchTerm.txt)
     console.log(res);
     setSearchTerm({ ...searchTerm, res })
@@ -39,15 +40,22 @@ export const Home = () => {
 
   const onToggleFav = () => {
     if (forecast.isFavorite) {
+      //ERROR - THE FORECAST LOCAL STATE IS NOT UPDATED WITH THE ID
       dispatch(removeFavLoc(forecast._id))
       setForecast({ ...forecast, isFavorite: false })
-      ///TODO -update in storage service
     } else {
-      dispatch(addFavLoc({ key: forecast.locKey, forecast: forecast.res, isFavorite: true }))
+      const newForecast = dispatch(addFavLoc({ key: forecast.locKey, forecast: forecast.res, isFavorite: true }))
+      console.log("🚀 ~ file: Home.jsx ~ line 49 ~ onToggleFav ~ newForecast", newForecast)
       setForecast({ ...forecast, isFavorite: true })
-       ///TODO -update in storage service
     }
   }
+
+  useEffect(() => {
+
+    console.log("🚀 ~ file: Home.jsx ~ line 57 ~ useEffect ~ forecast", forecast)
+    if (forecast.locKey) forecastService.update(forecast.locKey, { city: forecast.city, country: forecast.country, res: forecast.res, isFavorite: forecast.isFavorite })
+  }, [forecast.isFavorite])
+
 
   return (
     <div className="home">
