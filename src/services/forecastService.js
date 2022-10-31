@@ -19,14 +19,15 @@ async function query(locKey, city, country) {
         try {
             const res = await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locKey}?apikey=nkOyFybtTGyunYA168WWKTuGxlVYRRAP`)
             storageService.save(FORECAST_STORAGE_KEY, { ...forecast, [locKey]: { ...res.data, city, country, isFavorite: false } })
-            console.log('from axios');
-            return res.data
+            forecast = await storageService.query(FORECAST_STORAGE_KEY, locKey)
+            console.log('from axios', forecast[locKey]);
+            return forecast[locKey]
         } catch (err) {
             console.log(err);
         }
     }
-    console.log('from storage', forecast[locKey].res);
-    return forecast[locKey].res
+    console.log('from storage', forecast[locKey]);
+    return forecast[locKey]
     // return storageService.query(FORECAST_STORAGE_KEY, req, locKey);
     // return httpService.get('board', { params: filterBy });
 }
@@ -38,8 +39,8 @@ async function getById(locId) {
 
 //TODO - update forecast - toggle true/false
 async function update(locKey, updatedForecast) {
-    console.log('updating forecast',locKey, updatedForecast);
+    console.log('updating forecast', locKey, updatedForecast);
     let forecast = await storageService.query(FORECAST_STORAGE_KEY, locKey)
-    storageService.save(FORECAST_STORAGE_KEY, {...forecast, [locKey]: updatedForecast})
+    storageService.save(FORECAST_STORAGE_KEY, { ...forecast, [locKey]: updatedForecast })
     // return httpService.get(`board/${boardId}`);
 }

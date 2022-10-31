@@ -8,11 +8,13 @@ import { NavBar } from './cmps/NavBar';
 function App() {
   return (
     <div>
-      <NavBar/>
-    <Routes>
-      <Route path='/favorites' element={<Favorites/>}/>
-      <Route path='/' element={<Home/>} />
-    </Routes>
+      <NavBar />
+      <main style={{ marginTop: '100px' }}>
+        <Routes>
+          <Route path='/favorites' element={<Favorites />} />
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </main>
     </div>
   );
 }

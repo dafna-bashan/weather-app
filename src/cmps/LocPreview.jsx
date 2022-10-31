@@ -4,7 +4,7 @@ export const LocPreview = ({ loc, onSelectLoc }) => {
     // console.log(loc.Key);
     return (
         <div className="loc-preview" onClick={() => onSelectLoc({ key: loc.Key, city: loc.LocalizedName, country: loc.Country.LocalizedName })}>
-            <span>{loc.AdministrativeArea.LocalizedName} </span><span>{loc.Country.LocalizedName}</span>
+            <span>{loc.LocalizedName} </span><span>{loc.Country.LocalizedName}</span>
         </div>
     )
 }

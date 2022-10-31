@@ -22,6 +22,7 @@ async function getById(favLocId) {
 }
 
 async function remove(favLocId) {
+    console.log("🚀 ~ file: favoritesService.js ~ line 25 ~ remove ~ favLocId", favLocId)
     return storageService.remove(FAV_STORAGE_KEY, favLocId);
     // return httpService.delete(`board/${boardId}`);
 }

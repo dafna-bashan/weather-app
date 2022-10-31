@@ -17,7 +17,7 @@ async function query(locName) {
         try {
             const res = await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=nkOyFybtTGyunYA168WWKTuGxlVYRRAP&q=${locName}`)
             storageService.save(LOCATION_STORAGE_KEY, { ...locations, [locName]: res.data })
-            console.log('from axios');
+            console.log('from axios', res.data);
             return res.data
         } catch (err) {
             console.log(err);

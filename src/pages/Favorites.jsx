@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { loadFavLocs } from '../store/favLocsActions'
+import { FavList } from '../cmps/FavList'
+import { forecastService } from '../services/forecastService'
+import { loadFavLocs, removeFavLoc } from '../store/favLocsActions'
 
 export const Favorites = () => {
 
@@ -11,9 +13,16 @@ export const Favorites = () => {
     dispatch(loadFavLocs())
   }, [])
 
+  const onRemoveFavLoc = (favLoc) => {
+    dispatch(removeFavLoc(favLoc._id))
+    // dispatch(loadFavLocs())
+    const updatedForecast = { ...favLoc, isFavorite: false }
+    delete updatedForecast.locKey
+    forecastService.update(favLoc.locKey, updatedForecast)
+  }
   return (
-    <div>Favorites
-      <div>{JSON.stringify(favLocs)}</div>
+    <div>
+      <FavList favLocs={favLocs} onRemoveFavLoc={onRemoveFavLoc} />
     </div>
   )
 }
