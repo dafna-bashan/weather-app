@@ -4,12 +4,14 @@ import { Home } from './pages/Home';
 import './assets/styles/main.scss'
 import { Favorites } from './pages/Favorites';
 import { NavBar } from './cmps/NavBar';
+import { BackgroundImg } from './cmps/BackgroundImg';
 
 function App() {
   return (
     <div>
+      <BackgroundImg />
       <NavBar />
-      <main style={{ marginTop: '100px' }}>
+      <main>
         <Routes>
           <Route path='/:favId' element={<Home />} />
           <Route path='/favorites' element={<Favorites />} />
