@@ -1,6 +1,7 @@
 
 const initialState = {
-    favLocs: []
+    favLocs: [],
+    currFavLoc : {}
 }
 
 
@@ -11,8 +12,8 @@ console.log("🚀 ~ file: favLocsReducer.js ~ line 8 ~ favLocsReducer ~ action",
         case 'SET_FAV_LOCS':
             return { ...state, favLocs: action.favLocs }
 
-        // case 'SET_FAVORITE':
-        //     return { ...state, currTodo: action.favorite }
+        case 'SET_FAVORITE':
+            return { ...state, currFavLoc: action.favLoc }
 
         case 'ADD_FAV_LOC':
             return { ...state, favLocs: [...state.favLocs, action.favLoc] }

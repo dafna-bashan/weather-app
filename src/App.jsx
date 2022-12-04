@@ -11,6 +11,7 @@ function App() {
       <NavBar />
       <main style={{ marginTop: '100px' }}>
         <Routes>
+          <Route path='/:favId' element={<Home />} />
           <Route path='/favorites' element={<Favorites />} />
           <Route path='/' element={<Home />} />
         </Routes>

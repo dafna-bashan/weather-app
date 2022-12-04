@@ -11,17 +11,17 @@ export function loadFavLocs(filterBy) {
     };
 }
 
-// export function loadTodo(todoId) {
-//     return async (dispatch) => {
-//         try {
-//             const todo = await todoService.getById(todoId);
-//             dispatch({ type: 'SET_TODO', todo });
-//             return todo;
-//         } catch (err) {
-//             console.log('todoActions: err in loadTodo', err);
-//         }
-//     };
-// }
+export function loadFavLoc(locId) {
+    return async (dispatch) => {
+        try {
+            const favLoc = await favoritesService.getById(locId);
+            dispatch({ type: 'SET_FAVORITE', favLoc });
+            return favLoc;
+        } catch (err) {
+            console.log('todoActions: err in loadfavLoc', err);
+        }
+    };
+}
 
 
 export function addFavLoc(loc) {

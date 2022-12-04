@@ -1,13 +1,12 @@
 import React from 'react'
-import { ForecastPreview } from './ForecastPreview'
+import { Link } from 'react-router-dom'
 
 export const FavPreview = ({ favLoc, onRemoveFavLoc }) => {
     // console.log(favLoc);
     return (
         <div>
-            <span style={{ textAlign: 'center' }}>{favLoc.city}, {favLoc.country}</span>
-            <ForecastPreview forecast={favLoc.DailyForecasts[0]} />
-            <button onClick={()=> onRemoveFavLoc(favLoc)}>Remove from favorites</button>
+            <Link to={`/${favLoc._id}`}><span style={{ textAlign: 'center' }}>{favLoc.city}, {favLoc.country}</span></Link>
+            <button onClick={()=> onRemoveFavLoc(favLoc)}>X</button>
         </div>
     )
 }

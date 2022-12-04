@@ -5,20 +5,39 @@ import { locationService } from '../services/locationService'
 import { forecastService } from '../services/forecastService'
 import { SearchBar } from '../cmps/SearchBar'
 import { useDispatch, useSelector } from 'react-redux'
-import { addFavLoc, loadFavLocs } from '../store/favLocsActions'
+import { addFavLoc, loadFavLoc, loadFavLocs } from '../store/favLocsActions'
+import { redirect, useParams, useNavigate } from 'react-router-dom'
 
 export const Home = () => {
   const [searchTerm, setSearchTerm] = useState({ txt: '', res: [] })
   const [forecast, setForecast] = useState({ locKey: '', city: '', country: '', res: {}, isFavorite: false })
+  const currFavLoc = useSelector(state => state.currFavLoc)
 
-  // const favLocs = useSelector(state => state.favLocs)
   const dispatch = useDispatch()
+  const params = useParams()
+  const navigate = useNavigate()
 
   const handleChange = ({ target }) => {
     const { name, value } = target
     setSearchTerm({ [name]: value })
     console.log(searchTerm);
   }
+
+  useEffect(() => {
+    console.log(params.favId);
+    if (params.favId) {
+      console.log('loading fav loc');
+      dispatch(loadFavLoc(params.favId))
+    } else {
+      setForecast({ locKey: '', city: '', country: '', res: {}, isFavorite: false })
+    }
+  }, [params.favId])
+
+  useEffect(() => {
+    setForecast(currFavLoc)
+  }, [currFavLoc._id])
+
+
 
   useEffect(() => {
     onSearch()
@@ -33,6 +52,7 @@ export const Home = () => {
   }
 
   const onSelectLoc = async (loc) => {
+    navigate('/')
     console.log("🚀 ~ file: Home.jsx ~ line 36 ~ onSelectLoc ~ loc", loc)
     const res = await forecastService.query(loc.key, loc.city, loc.country)
     setForecast({ ...res, locKey: loc.key })
@@ -60,7 +80,7 @@ export const Home = () => {
   useEffect(() => {
 
     console.log("🚀 ~ file: Home.jsx ~ line 57 ~ useEffect ~ forecast", forecast)
-    const updatedForecast = {...forecast}
+    const updatedForecast = { ...forecast }
     delete updatedForecast.locKey
     forecastService.update(forecast.locKey, updatedForecast)
     // eslint-disable-next-line
@@ -71,7 +91,7 @@ export const Home = () => {
     <div className="home">
       <div className="search-container">
         <SearchBar searchTerm={searchTerm.txt} handleChange={handleChange} />
-        {searchTerm.res && searchTerm.res.length && <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} />}
+        {searchTerm.res && searchTerm.res.length ? <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} /> : null}
       </div>
       {forecast.DailyForecasts && <ForecastList city={forecast.city} country={forecast.country} forecast={forecast} onAddFav={onAddFav} />}
     </div>
