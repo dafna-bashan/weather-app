@@ -1,7 +1,7 @@
 
 const initialState = {
     favLocs: [],
-    currFavLoc : {}
+    currFavLoc : {isFav: true}
 }
 
 

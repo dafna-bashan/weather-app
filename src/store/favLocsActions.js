@@ -15,10 +15,11 @@ export function loadFavLoc(locId) {
     return async (dispatch) => {
         try {
             const favLoc = await favoritesService.getById(locId);
+            // console.log(favLoc);
             dispatch({ type: 'SET_FAVORITE', favLoc });
-            return favLoc;
+            // return favLoc;
         } catch (err) {
-            console.log('todoActions: err in loadfavLoc', err);
+            console.log('favLocsActions: err in loadfavLoc', err);
         }
     };
 }
@@ -29,6 +30,7 @@ export function addFavLoc(loc) {
         try {
             const favLoc = await favoritesService.add(loc);
             dispatch({ type: 'ADD_FAV_LOC', loc: favLoc });
+            return favLoc;
         } catch (err) {
             console.log('favLocsActions: err in addfavLoc', err);
         }
