@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { storageService } from './asyncStorageService';
-// import { httpService } from './httpService';
 const FORECAST_STORAGE_KEY = 'forecast'
 
 export const forecastService = {
@@ -29,19 +28,14 @@ async function query(locKey, city, country) {
     }
     console.log('from storage', forecast[locKey]);
     return forecast[locKey]
-    // return storageService.query(FORECAST_STORAGE_KEY, req, locKey);
-    // return httpService.get('board', { params: filterBy });
 }
 
 async function getById(locId) {
     return storageService.get(FORECAST_STORAGE_KEY, locId)
-    // return httpService.get(`board/${boardId}`);
 }
 
-//TODO - update forecast - toggle true/false
 async function update(locKey, updatedForecast) {
     console.log('updating forecast', locKey, updatedForecast);
     let forecast = await storageService.query(FORECAST_STORAGE_KEY, locKey)
     storageService.save(FORECAST_STORAGE_KEY, { ...forecast, [locKey]: updatedForecast })
-    // return httpService.get(`board/${boardId}`);
 }

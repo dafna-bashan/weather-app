@@ -2,10 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 export const FavPreview = ({ favLoc, onRemoveFavLoc }) => {
-    // console.log(favLoc);
-    const { Day, Date, Night, Temperature } = favLoc.DailyForecasts[0]
+    const { Day, Night, Temperature } = favLoc.DailyForecasts[0]
     return (
-        // <div className='fav-preview'>
         <div className='forecast-preview'>
             <button onClick={() => onRemoveFavLoc(favLoc)}>X</button>
             <Link to={`/${favLoc._id}`}>

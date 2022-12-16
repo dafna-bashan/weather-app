@@ -11,15 +11,16 @@ export const Favorites = () => {
 
   useEffect(() => {
     dispatch(loadFavLocs())
+    // eslint-disable-next-line
   }, [])
 
   const onRemoveFavLoc = (favLoc) => {
     dispatch(removeFavLoc(favLoc._id))
-    // dispatch(loadFavLocs())
     const updatedForecast = { ...favLoc, isFavorite: false }
     delete updatedForecast.locKey
     forecastService.update(favLoc.locKey, updatedForecast)
   }
+
   return (
     <div>
       <FavList favLocs={favLocs} onRemoveFavLoc={onRemoveFavLoc} />

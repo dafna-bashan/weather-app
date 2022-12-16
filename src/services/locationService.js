@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { storageService } from './asyncStorageService';
-// import { httpService } from './httpService';
 const LOCATION_STORAGE_KEY = 'location'
 
 export const locationService = {
@@ -11,7 +10,6 @@ export const locationService = {
 
 
 async function query(locName) {
-    // if (!locName) return
     var locations = await storageService.query(LOCATION_STORAGE_KEY, locName)
     if (!locations || !locations[locName]) {
         try {
@@ -25,12 +23,9 @@ async function query(locName) {
     }
     console.log('from storage');
     return locations[locName]
-    // return storageService.query(LOCATION_STORAGE_KEY, req, locName);
-    // return httpService.get('board', { params: filterBy });
 }
 
 
 async function getById(locId) {
     return storageService.get(LOCATION_STORAGE_KEY, locId)
-    // return httpService.get(`board/${boardId}`);
 }

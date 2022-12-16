@@ -6,15 +6,14 @@ import { forecastService } from '../services/forecastService'
 import { SearchBar } from '../cmps/SearchBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { addFavLoc, loadFavLoc, loadFavLocs, removeFavLoc } from '../store/favLocsActions'
-import { redirect, useParams, useNavigate } from 'react-router-dom'
-import { defaultForecast } from '../data'
+import { useParams, useNavigate } from 'react-router-dom'
 
-//TODO - FIX THE BUG : WHEN ADDING NEW FAV AND CLICKING ON IT LEADS TO TEL AVIV
+
 
 export const Home = () => {
+
   const [searchTerm, setSearchTerm] = useState({ txt: '', res: [] })
   const [forecast, setForecast] = useState({ locKey: '', city: '', country: '', res: {}, isFavorite: false })
-  // const [forecast, setForecast] = useState(defaultForecast)
   const currFavLoc = useSelector(state => state.currFavLoc)
 
   const dispatch = useDispatch()
@@ -22,18 +21,24 @@ export const Home = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    loadDefaultForecast()
-  }, [])
+    console.log(params.favId);
+    if (params.favId) {
+      console.log('loading fav loc');
+      dispatch(loadFavLoc(params.favId))
+    } else {
+      loadDefaultForecast()
+    }
+    // eslint-disable-next-line
+  }, [params.favId])
+
+  useEffect(() => {
+    if (currFavLoc.DailyForecasts) setForecast(currFavLoc)
+    // eslint-disable-next-line
+  }, [currFavLoc._id])
 
   const loadDefaultForecast = async () => {
     const res = await forecastService.query('215854', 'Tel Aviv', 'Israel')
     setForecast({ ...res, locKey: '215854' })
-  }
-
-  const handleChange = ({ target }) => {
-    const { name, value } = target
-    setSearchTerm({ [name]: value })
-    console.log(searchTerm);
   }
 
   useEffect(() => {
@@ -46,6 +51,12 @@ export const Home = () => {
     const res = await locationService.query(searchTerm.txt)
     console.log(res);
     setSearchTerm({ ...searchTerm, res })
+  }
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target
+    setSearchTerm({ [name]: value })
+    console.log(searchTerm);
   }
 
   const onSelectLoc = async (loc) => {
@@ -65,41 +76,15 @@ export const Home = () => {
   const onToogleFav = (boolean) => {
     if (boolean) {
       const favLocPrm = dispatch(addFavLoc({ ...forecast, isFavorite: true }))
-     favLocPrm.then(favLoc => navigate(`/${favLoc._id}`)
-     ) 
+      favLocPrm.then(favLoc => navigate(`/${favLoc._id}`)
+      )
     } else {
-      // dispatch(removeFavLoc(currFavLoc._id))
       dispatch(removeFavLoc(currFavLoc._id))
 
     }
     setForecast({ ...forecast, isFavorite: boolean })
     dispatch(loadFavLocs())
-
   }
-
-  // const onRemoveFavLoc = (favLoc) => {
-  //   dispatch(removeFavLoc(favLoc._id))
-  //   // dispatch(loadFavLocs())
-  //   const updatedForecast = { ...favLoc, isFavorite: false }
-  //   delete updatedForecast.locKey
-  //   forecastService.update(favLoc.locKey, updatedForecast)
-  // }
-
-  useEffect(() => {
-    console.log(params.favId);
-    if (params.favId) {
-      console.log('loading fav loc');
-      dispatch(loadFavLoc(params.favId))
-    } else {
-      loadDefaultForecast()
-      // setForecast({ locKey: '', city: '', country: '', res: {}, isFavorite: false })
-      // setForecast(defaultForecast)
-    }
-  }, [params.favId])
-
-  useEffect(() => {
-    if (currFavLoc.DailyForecasts) setForecast(currFavLoc)
-  }, [currFavLoc._id])
 
   useEffect(() => {
     console.log("🚀 ~ file: Home.jsx ~ line 57 ~ useEffect ~ forecast", forecast)
@@ -109,18 +94,6 @@ export const Home = () => {
     // eslint-disable-next-line
   }, [forecast.isFavorite])
 
-  // const onToggleFav = () => {
-  //   if (forecast.isFavorite) {
-  //     //ERROR - THE FORECAST LOCAL STATE IS NOT UPDATED WITH THE ID
-  //     dispatch(removeFavLoc(forecast._id))
-  //     setForecast({ ...forecast, isFavorite: false })
-  //   } else {
-  //     dispatch(addFavLoc({ ...forecast, isFavorite: true }))
-  //     setForecast({ ...forecast, isFavorite: true })
-  //   }
-  //   dispatch(loadFavLocs())
-  // }
-
 
 
   return (
@@ -129,7 +102,6 @@ export const Home = () => {
         <SearchBar searchTerm={searchTerm.txt} handleChange={handleChange} />
         {searchTerm.res && searchTerm.res.length ? <LocList locs={searchTerm.res} onSelectLoc={onSelectLoc} /> : null}
       </div>
-      {/* {JSON.stringify(forecast)} */}
       {forecast.DailyForecasts && <ForecastList city={forecast.city} country={forecast.country} forecast={forecast} onAddFav={onAddFav} onToogleFav={onToogleFav} />}
     </div>
   )
