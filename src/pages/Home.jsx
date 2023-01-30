@@ -23,7 +23,7 @@ export const Home = () => {
   useEffect(() => {
     console.log(params.favId);
     if (params.favId) {
-      console.log('loading fav loc');
+      console.log('loading fav loc!!');
       dispatch(loadFavLoc(params.favId))
     } else {
       loadDefaultForecast()
